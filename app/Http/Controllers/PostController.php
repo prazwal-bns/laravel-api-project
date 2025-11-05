@@ -70,7 +70,12 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string|min:2',
+            'content' => ['required','string','min:5']
+        ]);
+
+        return $data;
     }
 
     /**
@@ -78,6 +83,6 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return response()->noContent();
     }
 }
