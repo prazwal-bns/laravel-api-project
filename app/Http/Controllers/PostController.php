@@ -12,18 +12,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return [
-            [
-                'id' => 1,
-                'title' => 'First Post',
-                'body' => 'This is the body of the first post.'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Second Post',
-                'body' => 'This is the body of the second post.'
-            ]
-        ];
+       $posts = Post::all();
+
+       return $posts;
     }
 
     /**
@@ -50,37 +41,33 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        return response()->json([
-            'message' => 'Post retrieved successfully',
-            'data' => [
-                'id' => $id,
-                'title' => 'Sample Post',
-                'body' => 'This is a sample post body.'
-            ]
-        ])
-        ->setStatusCode(200);
+        return response()->json($post);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
         $data = $request->validate([
             'title' => 'required|string|min:2',
             'body' => ['required','string','min:5']
         ]);
 
-        return $data;
+        $post->update($data);
+
+        return $post;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        return response()->nobody();
+        $post->delete();
+
+         return response()->noContent();
     }
 }
