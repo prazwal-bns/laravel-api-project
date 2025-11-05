@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,12 +16,12 @@ class PostController extends Controller
             [
                 'id' => 1,
                 'title' => 'First Post',
-                'content' => 'This is the content of the first post.'
+                'body' => 'This is the body of the first post.'
             ],
             [
                 'id' => 2,
                 'title' => 'Second Post',
-                'content' => 'This is the content of the second post.'
+                'body' => 'This is the body of the second post.'
             ]
         ];
     }
@@ -30,23 +31,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // get all request data
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|string|min:2',
+            'body' => ['required','string','min:5']
+        ]);
 
-        // get specific fields
-        // $data = $request->only('title');
-        // return $data;
+        $data['author_id'] = 1; 
 
-        // set status code and return JSON response
+        $post = Post::create($data);
+
         return response()->json([
             'message' => 'Post created successfully',
-            'data' => [
-                'id' => $data['id'],
-                'title' => $data['title'],
-                'content' => $data['content']
-            ]
-        ], 201);
-        // ->setStatusCode(201);
+            'data' => $post
+        ])
+        ->setStatusCode(201);
     }
 
     /**
@@ -59,7 +57,7 @@ class PostController extends Controller
             'data' => [
                 'id' => $id,
                 'title' => 'Sample Post',
-                'content' => 'This is a sample post content.'
+                'body' => 'This is a sample post body.'
             ]
         ])
         ->setStatusCode(200);
@@ -72,7 +70,7 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|min:2',
-            'content' => ['required','string','min:5']
+            'body' => ['required','string','min:5']
         ]);
 
         return $data;
@@ -83,6 +81,6 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        return response()->noContent();
+        return response()->nobody();
     }
 }
