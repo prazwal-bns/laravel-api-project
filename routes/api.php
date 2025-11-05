@@ -14,4 +14,6 @@ Route::get('/user', function (Request $request) {
 //     return ["message" => "Hello, World!"];
 // });
 
-Route::apiResource('posts', PostController::class);
+Route::prefix('v1')->group(function () {
+    Route::apiResource('posts', PostController::class);
+});
