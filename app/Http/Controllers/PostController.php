@@ -19,12 +19,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // get all request data
+        // $data = $request->all();
+
+        // get specific fields
+        // $data = $request->only('title');
+        // return $data;
+
+        // set status code and return JSON response
         return response()->json([
             'message' => 'Post created successfully',
             'data' => [
-                'id' => 1,
-                'title' => 'Sample Post',
-                'content' => 'This is a sample post content.'
+                'title' => $request->input('title'),
+                'content' => $request->input('content')
             ]
         ], 201);
         // ->setStatusCode(201);
