@@ -11,7 +11,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        return 'list of posts';
+        return [
+            [
+                'id' => 1,
+                'title' => 'First Post',
+                'content' => 'This is the content of the first post.'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Second Post',
+                'content' => 'This is the content of the second post.'
+            ]
+        ];
     }
 
     /**
@@ -20,7 +31,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // get all request data
-        // $data = $request->all();
+        $data = $request->all();
 
         // get specific fields
         // $data = $request->only('title');
@@ -30,8 +41,9 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Post created successfully',
             'data' => [
-                'title' => $request->input('title'),
-                'content' => $request->input('content')
+                'id' => $data['id'],
+                'title' => $data['title'],
+                'content' => $data['content']
             ]
         ], 201);
         // ->setStatusCode(201);
