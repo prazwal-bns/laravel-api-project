@@ -11,7 +11,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return ["message" => "List of posts"];
+        return 'list of posts';
     }
 
     /**
@@ -19,7 +19,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return ["message" => "Post created"];
+        return response()->json([
+            'message' => 'Post created successfully',
+            'data' => [
+                'id' => 1,
+                'title' => 'Sample Post',
+                'content' => 'This is a sample post content.'
+            ]
+        ], 201);
+        // ->setStatusCode(201);
     }
 
     /**
@@ -27,7 +35,15 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json([
+            'message' => 'Post retrieved successfully',
+            'data' => [
+                'id' => $id,
+                'title' => 'Sample Post',
+                'content' => 'This is a sample post content.'
+            ]
+        ])
+        ->setStatusCode(200);
     }
 
     /**
