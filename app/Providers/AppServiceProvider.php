@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Disable the outer "data" key for all resources globally
-        JsonResource::withoutWrapping();
+        // JsonResource::withoutWrapping();
     }
 }

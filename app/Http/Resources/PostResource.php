@@ -8,8 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PostResource extends JsonResource
 {
     // when you don't want the outer "data" key to be shown while return new PostResource($post);
-    // won't be applied for index so for that you need to disable from apps/Providers/AppServiceProvider.php
-    public static $wrap = '';
+    // won't be applied for all resource so for that you need to disable from apps/Providers/AppServiceProvider.php
+    // public static $wrap = null;
     /**
      * Transform the resource into an array.
      *
