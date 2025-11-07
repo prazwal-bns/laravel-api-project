@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
 {
+    // when you don't want the outer "data" key to be shown while return new PostResource($post);
+    public static $wrap = '';
     /**
      * Transform the resource into an array.
      *
@@ -20,7 +22,7 @@ class PostResource extends JsonResource
             'body' => $this->body,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d'),
-            'author' => new UserResource($this->author),
+            'author' => new UserResource($this->whenLoaded('author')),
         ];
     }
 }

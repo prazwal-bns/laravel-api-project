@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-       return PostResource::collection(Post::all());
+       return PostResource::collection(Post::with('author')->paginate(2));
     }
 
     /**
@@ -40,7 +40,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json($post);
+        return new PostResource($post);
     }
 
     /**
@@ -52,7 +52,7 @@ class PostController extends Controller
 
         $post->update($data);
 
-        return $post;
+        return new PostResource($post);
     }
 
     /**
