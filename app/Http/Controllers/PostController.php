@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-       return PostResource::collection(Post::with('author')->paginate(2));
+        $user = request()->user();
+
+        $posts = $user->posts()->paginate();
+        return PostResource::collection($posts);
     }
 
     /**
@@ -24,7 +28,7 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $data['author_id'] = 1; 
+        $data['author_id'] = $request->user()->id; 
 
         $post = Post::create($data);
 
