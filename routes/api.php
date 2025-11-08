@@ -4,7 +4,9 @@ use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->group(function () {
+// inline rate limit for API requests: 10 requests per minute per user or IP address
+// Route::middleware('auth:sanctum','throttle:10,1')->group(function () {
+Route::middleware('auth:sanctum','throttle:api')->group(function () {
 
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -15,4 +17,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+// auth routes
 require __DIR__.'/auth.php';

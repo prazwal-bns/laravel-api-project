@@ -31,11 +31,14 @@ class LoginController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request)
     {
         $user = $request->user();
         $user->currentAccessToken()->delete();
 
-        return response()->noContent();
+        // return response()->noContent();
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
     }
 }

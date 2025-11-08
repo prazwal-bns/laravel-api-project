@@ -15,8 +15,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Auth::user()->posts()->paginate();
-        return PostResource::collection($posts);
+        if(Auth::check()) {
+            $posts = Auth::user()->posts()->paginate();
+            return PostResource::collection($posts);
+        }
+
+        return response()->json([
+            'message' => 'Unauthorized. Please login to view your posts.'
+        ], 401);
     }
 
     /**
@@ -66,6 +72,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        abort_if(Auth::id() !== $post->author_id, 403, 'Access Forbidden.');
         $post->delete();
 
          return response()->noContent();
