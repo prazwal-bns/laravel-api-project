@@ -44,6 +44,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $user = request()->user();
+
+        if($user->id !== $post->author_id) {
+            abort(403, 'Access Forbidden.');
+        }
+        
         return new PostResource($post);
     }
 
