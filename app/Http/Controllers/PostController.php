@@ -15,9 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $user = request()->user();
-
-        $posts = $user->posts()->paginate();
+        $posts = Auth::user()->posts()->paginate();
         return PostResource::collection($posts);
     }
 
@@ -28,7 +26,7 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $data['author_id'] = $request->user()->id; 
+        $data['author_id'] = Auth::id(); 
 
         $post = Post::create($data);
 
@@ -43,13 +41,9 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(Post $post)
-    {
-        $user = request()->user();
+    {   
+        abort_if(Auth::id() !== $post->author_id, 403, 'Access Forbidden.');
 
-        if($user->id !== $post->author_id) {
-            abort(403, 'Access Forbidden.');
-        }
-        
         return new PostResource($post);
     }
 
@@ -57,8 +51,10 @@ class PostController extends Controller
      * Update the specified resource in storage.
      */
     public function update(StorePostRequest $request, Post $post)
-    {
+    {   
         $data = $request->validated();
+
+        abort_if(Auth::id() !== $post->author_id, 403, 'Access Forbidden.');
 
         $post->update($data);
 
